@@ -1,32 +1,55 @@
-# React + TypeScript + Vite
+# 🌀 Naruto Ninja Chronicles
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Welcome to **Ninja Chronicles**, a premium, cinematic interactive encyclopedia of the Naruto Shinobi Universe. It features ultra-smooth animations, a custom mouse-follow cursor, a dynamic HTML5 Canvas chakra-particle background, interactive 3D cards, and extensive classified dossiers on Kages, Clans, Hidden Villages, and Tailed Beasts!
 
-Currently, two official plugins are available:
+Built using **React 19, Vite, TypeScript, Tailwind CSS v4, GSAP, Framer Motion, and Lenis.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 💻 How to Run This Website on Your Laptop
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+To run this website locally, you only need to download **one software** (Node.js) and run a few simple commands. Here is the step-by-step guide:
 
-## Expanding the Oxlint configuration
+### Step 1: Install Node.js
+You must have **Node.js** installed on your laptop to run the server.
+- Download and install the free **LTS Version** from the official website: **[https://nodejs.org](https://nodejs.org)**
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### Step 2: Download the Code
+- Click the green **Code** button at the top of this GitHub repository page.
+- Select **Download ZIP**.
+- Extract/Unzip the folder onto your laptop (e.g., on your Desktop or in your Documents folder).
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### Step 3: Open the Terminal in the Project Folder
+- **Windows**: Open the extracted folder, click on the address bar at the top, type `cmd`, and press **Enter**. (This opens the Command Prompt directly inside your folder).
+- **Mac**: Open the **Terminal** app, type `cd ` (with a space), drag and drop your project folder from Finder into the Terminal window, and press **Enter**.
+
+### Step 4: Install All Dependencies (One Click!)
+You **do not** need to download all the libraries (Tailwind, GSAP, etc.) individually! Running this single command will automatically read the project file and download everything you need at once:
+```
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Step 5: Start the Website!
+Once the installation finishes, run this command to start your local server:
+```
+npm run dev
+```
+
+### Step 6: View the Site
+Open your web browser (Chrome, Edge, Safari, etc.) and go to:
+👉 **`http://localhost:5173`**
+
+---
+
+## 🛠️ Built-In Project Dependencies
+For your reference, these are the premium libraries automatically downloaded when you run `npm install`:
+- **React 19 & Vite**: Ultra-fast single-page web framework.
+- **Tailwind CSS v4**: Advanced glassmorphic and neon utility-first styles.
+- **GSAP (GreenSock)**: Elite industry-standard scroll animations.
+- **Framer Motion**: Smooth 3D tilt hover animations, modal expands, and page loaders.
+- **Lenis**: Silk-smooth momentum scrolling physics.
+- **Lucide React**: Premium minimalist modern UI icons.
+
+---
+
+*Enjoy exploring the secrets of the Shinobi world! 🍃*
