@@ -2,23 +2,16 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SHINOBI_ROSTER } from "../data/shinobi";
 import CharacterCard from "../components/CharacterCard";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 
 export default function ShinobiDirectory() {
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<"all" | "leaf" | "rogue" | "kage" | "sannin">("all");
-
-  const categories = [
-    { id: "all", label: "All Shinobi" },
-    { id: "leaf", label: "Hidden Leaf" },
-    { id: "rogue", label: "Rogue/Akatsuki" },
-    { id: "kage", label: "Kages" },
-    { id: "sannin", label: "Sannin" },
-  ];
+  const [villageFilter, setVillageFilter] = useState("All Villages");
+  const [rankFilter, setRankFilter] = useState("All Ranks");
 
   const filteredRoster = useMemo(() => {
     return SHINOBI_ROSTER.filter((shinobi) => {
-      // Search matching
+      // 1. Search text matching
       const matchesSearch =
         shinobi.name.toLowerCase().includes(search.toLowerCase()) ||
         shinobi.clan.toLowerCase().includes(search.toLowerCase()) ||
@@ -26,63 +19,108 @@ export default function ShinobiDirectory() {
 
       if (!matchesSearch) return false;
 
-      // Category filter matching
-      if (filter === "all") return true;
-      if (filter === "leaf") return shinobi.village.includes("Leaf");
-      if (filter === "rogue") return shinobi.village.includes("Rogue") || shinobi.rank.includes("Rogue") || shinobi.rank.includes("Akatsuki");
-      if (filter === "kage") return shinobi.rank.includes("Kage") || shinobi.id === "hashirama" || shinobi.id === "tobirama" || shinobi.id === "hiruzen" || shinobi.id === "minato";
-      if (filter === "sannin") return shinobi.rank.includes("Sannin");
+      // 2. Village matching
+      if (villageFilter !== "All Villages") {
+        if (villageFilter === "Rogue") {
+          // Check for Rogue or Unknown
+          if (!shinobi.village.includes("Rogue") && !shinobi.village.includes("Unknown") && !shinobi.village.includes("Akatsuki")) {
+            return false;
+          }
+        } else {
+          // Exact village match (e.g. "Leaf", "Sand")
+          if (!shinobi.village.includes(villageFilter)) return false;
+        }
+      }
+
+      // 3. Rank matching
+      if (rankFilter !== "All Ranks") {
+        if (rankFilter === "Kage") {
+          // General Kage, excluding Hokage if we want to differentiate
+          if (!shinobi.rank.includes("Kage") && !shinobi.rank.includes("Kazekage") && !shinobi.rank.includes("Raikage") && !shinobi.rank.includes("Mizukage") && !shinobi.rank.includes("Tsuchikage")) {
+            return false;
+          }
+        } else if (rankFilter === "Akatsuki") {
+          if (!shinobi.rank.includes("Akatsuki") && !shinobi.village.includes("Akatsuki")) return false;
+        } else if (rankFilter === "Missing-Nin") {
+          if (!shinobi.rank.includes("Rogue")) return false;
+        } else {
+          if (!shinobi.rank.toLowerCase().includes(rankFilter.toLowerCase())) return false;
+        }
+      }
 
       return true;
     });
-  }, [search, filter]);
+  }, [search, villageFilter, rankFilter]);
 
   return (
     <section id="shinobi" className="py-24 px-6 md:px-12 bg-[#070707] border-t border-white/5 relative">
       <div className="max-w-7xl mx-auto">
         {/* Header Block */}
-        <div className="text-center mb-16">
-          <span className="text-[10px] font-cinzel text-accent-orange tracking-[0.3em] uppercase block mb-3">
-            Shinobi Directory
-          </span>
-          <h2 className="text-4xl md:text-5xl font-black font-cinzel tracking-wider text-white mb-4">
-            LEGENDARY SHINOBI
+        <div className="text-left mb-16">
+          <h2 className="text-4xl md:text-5xl font-black font-cinzel tracking-wider text-white mb-4 drop-shadow-[0_0_8px_rgba(255,122,24,0.5)]">
+            SHINOBI <span className="text-accent-orange">DIRECTORY</span>
           </h2>
-          <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-accent-orange to-transparent mx-auto mb-6" />
-          <p className="text-sm text-white/50 max-w-xl mx-auto font-poppins leading-relaxed">
-            Search and explore the files of the world's most powerful ninja. Click any card to reveal classified jutsu statistics and custom chakra abilities.
+          <p className="text-xs text-white/50 font-poppins tracking-[0.2em] uppercase">
+            DATABASE OF LEGENDARY NINJA ACROSS THE FIVE GREAT NATIONS
           </p>
         </div>
 
         {/* Filter and Search Controls bar */}
-        <div className="flex flex-col md:flex-row gap-6 justify-between items-center mb-12 bg-white/2 rounded-2xl p-4 border border-white/5 backdrop-blur-md">
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setFilter(cat.id as any)}
-                className={`px-4 py-2 rounded-xl text-xs font-cinzel tracking-widest uppercase transition-all duration-300 cursor-pointer ${
-                  filter === cat.id
-                    ? "bg-gradient-to-r from-accent-orange to-accent-gold text-white font-bold shadow-lg shadow-accent-orange/10"
-                    : "bg-transparent text-white/50 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
+        <div className="flex flex-col lg:flex-row gap-4 mb-12 items-center bg-[#111111]/50 p-2 rounded-2xl border border-white/5">
+          
           {/* Search Input */}
-          <div className="relative w-full md:w-80">
+          <div className="relative w-full lg:flex-1">
             <input
               type="text"
-              placeholder="Search Name, Clan, Specialty..."
+              placeholder="Search by name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-[#111111] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-xs font-poppins text-white placeholder-white/30 focus:outline-none focus:border-accent-orange/50 transition-colors"
+              className="w-full bg-[#111111] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm font-poppins text-white placeholder-white/30 focus:outline-none focus:border-accent-orange/50 transition-colors"
             />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={14} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" size={16} />
+          </div>
+
+          {/* Dropdowns */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
+            {/* Village Dropdown */}
+            <div className="relative w-full sm:w-48">
+              <select
+                value={villageFilter}
+                onChange={(e) => setVillageFilter(e.target.value)}
+                className="w-full bg-[#111111] border border-white/10 rounded-xl py-3 pl-4 pr-10 text-sm font-poppins text-white focus:outline-none focus:border-accent-orange/50 transition-colors appearance-none cursor-pointer"
+              >
+                <option value="All Villages">All Villages</option>
+                <option value="Leaf">Hidden Leaf</option>
+                <option value="Sand">Hidden Sand</option>
+                <option value="Mist">Hidden Mist</option>
+                <option value="Cloud">Hidden Cloud</option>
+                <option value="Stone">Hidden Stone</option>
+                <option value="Rogue">Rogue/Unknown</option>
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" size={16} />
+            </div>
+
+            {/* Rank Dropdown */}
+            <div className="relative w-full sm:w-48">
+              <select
+                value={rankFilter}
+                onChange={(e) => setRankFilter(e.target.value)}
+                className="w-full bg-[#111111] border border-white/10 rounded-xl py-3 pl-4 pr-10 text-sm font-poppins text-white focus:outline-none focus:border-accent-orange/50 transition-colors appearance-none cursor-pointer"
+                style={{
+                  borderColor: rankFilter !== "All Ranks" ? "#ff7a18" : ""
+                }}
+              >
+                <option value="All Ranks">All Ranks</option>
+                <option value="Hokage">Hokage</option>
+                <option value="Kage">Kage (Other)</option>
+                <option value="Jonin">Jōnin</option>
+                <option value="Sannin">Sannin</option>
+                <option value="Missing-Nin">Missing-Nin</option>
+                <option value="Akatsuki">Akatsuki</option>
+                <option value="Genin">Genin</option>
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" size={16} />
+            </div>
           </div>
         </div>
 
@@ -109,13 +147,13 @@ export default function ShinobiDirectory() {
 
         {/* Empty State */}
         {filteredRoster.length === 0 && (
-          <div className="text-center py-20 bg-white/2 rounded-2xl border border-dashed border-white/5 mt-6">
+          <div className="text-center py-20 bg-[#111111] rounded-2xl border border-dashed border-white/10 mt-6">
             <SlidersHorizontal className="mx-auto text-white/20 mb-4" size={32} />
             <h3 className="font-cinzel text-lg text-white/80 tracking-widest uppercase mb-1">
               No Shinobi Found
             </h3>
-            <p className="text-xs text-white/40 font-poppins">
-              Try adjusting your search criteria or filters.
+            <p className="text-sm text-white/40 font-poppins">
+              Try adjusting your village or rank filters.
             </p>
           </div>
         )}

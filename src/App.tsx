@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Lenis from "lenis";
 import Navbar from "./components/Navbar";
 import Hero from "./sections/Hero";
@@ -11,9 +12,18 @@ import Footer from "./components/Footer";
 import Cursor from "./components/Cursor";
 import Loader from "./components/Loader";
 
+// Utility component to reset scroll position on route transitions
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState("hero");
+  const navigate = useNavigate();
 
   // Initialize Lenis Smooth Scroll
   useEffect(() => {
@@ -39,39 +49,6 @@ export default function App() {
     };
   }, [loading]);
 
-  // Monitor Active Sections for Navbar Highlighting
-  useEffect(() => {
-    if (loading) return;
-
-    const sections = ["hero", "shinobi", "clans", "villages", "bijuu", "gallery"];
-    const handleScroll = () => {
-      const scrollPos = window.scrollY + window.innerHeight / 3;
-
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading]);
-
-  const handleNavClick = (sectionId: string) => {
-    const target = document.getElementById(sectionId);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-      setActiveSection(sectionId);
-    }
-  };
-
   if (loading) {
     return <Loader onComplete={() => setLoading(false)} />;
   }
@@ -82,20 +59,22 @@ export default function App() {
       <Cursor />
 
       {/* Responsive Glowing Navbar */}
-      <Navbar onNavClick={handleNavClick} activeSection={activeSection} />
+      <Navbar />
 
-      {/* Main Sections */}
-      <Hero onExploreClick={() => handleNavClick("shinobi")} />
-      
-      <ShinobiDirectory />
-      
-      <Clans />
-      
-      <Villages />
-      
-      <BijuuCodex />
-      
-      <Gallery />
+      {/* Reset scroll on route change */}
+      <ScrollToTop />
+
+      {/* Render Main Section Routes */}
+      <main className="pt-20"> {/* Add top padding for fixed navbar */}
+        <Routes>
+          <Route path="/" element={<Hero onExploreClick={() => navigate("/shinobi")} />} />
+          <Route path="/shinobi" element={<ShinobiDirectory />} />
+          <Route path="/clans" element={<Clans />} />
+          <Route path="/villages" element={<Villages />} />
+          <Route path="/bijuu" element={<BijuuCodex />} />
+          <Route path="/gallery" element={<Gallery />} />
+        </Routes>
+      </main>
 
       {/* Luxury Cinematic Footer */}
       <Footer />
