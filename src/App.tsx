@@ -8,6 +8,7 @@ import Clans from "./sections/Clans";
 import Villages from "./sections/Villages";
 import BijuuCodex from "./sections/BijuuCodex";
 import Gallery from "./sections/Gallery";
+import type { GalleryItem } from "./sections/Gallery";
 import Footer from "./components/Footer";
 import Cursor from "./components/Cursor";
 import Loader from "./components/Loader";
@@ -23,6 +24,7 @@ function ScrollToTop() {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [customHeroBg, setCustomHeroBg] = useState<GalleryItem | null>(null);
   const navigate = useNavigate();
 
   // Initialize Lenis Smooth Scroll
@@ -67,12 +69,29 @@ export default function App() {
       {/* Render Main Section Routes */}
       <main className="pt-20"> {/* Add top padding for fixed navbar */}
         <Routes>
-          <Route path="/" element={<Hero onExploreClick={() => navigate("/shinobi")} />} />
+          <Route 
+            path="/" 
+            element={
+              <Hero 
+                onExploreClick={() => navigate("/shinobi")} 
+                customBg={customHeroBg}
+                onResetBg={() => setCustomHeroBg(null)}
+              />
+            } 
+          />
           <Route path="/shinobi" element={<ShinobiDirectory />} />
           <Route path="/clans" element={<Clans />} />
           <Route path="/villages" element={<Villages />} />
           <Route path="/bijuu" element={<BijuuCodex />} />
-          <Route path="/gallery" element={<Gallery />} />
+          <Route 
+            path="/gallery" 
+            element={
+              <Gallery 
+                onSelectBackground={setCustomHeroBg} 
+                activeBgId={customHeroBg ? customHeroBg.id : null}
+              />
+            } 
+          />
         </Routes>
       </main>
 

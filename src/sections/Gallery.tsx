@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye } from "lucide-react";
+import { Eye, ShieldAlert } from "lucide-react";
 
-interface GalleryItem {
+export interface GalleryItem {
   id: string;
   title: string;
   category: string;
@@ -62,8 +62,18 @@ const GALLERY_ITEMS: GalleryItem[] = [
   }
 ];
 
-export default function Gallery() {
+interface GalleryProps {
+  onSelectBackground: (item: GalleryItem | null) => void;
+  activeBgId: string | null;
+}
+
+export default function Gallery({ onSelectBackground, activeBgId }: GalleryProps) {
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+
+  const handleSetBackground = (item: GalleryItem) => {
+    onSelectBackground(item);
+    setSelectedItem(null); // Close modal after selection
+  };
 
   return (
     <section id="gallery" className="py-24 px-6 md:px-12 bg-[#070707] relative overflow-hidden">
@@ -87,49 +97,61 @@ export default function Gallery() {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {GALLERY_ITEMS.map((item) => (
-            <motion.div
-              key={item.id}
-              whileHover={{ y: -6 }}
-              onClick={() => setSelectedItem(item)}
-              className="glass-panel rounded-2xl overflow-hidden h-80 relative cursor-pointer group border border-white/5 flex flex-col justify-between p-8"
-            >
-              {/* Blur color circle behind */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
-                style={{
-                  background: `radial-gradient(circle at center, ${item.color}30 0%, transparent 70%)`,
-                }}
-              />
-
-              {/* Category */}
-              <div className="flex justify-between items-center text-[10px] font-cinzel text-white/40 tracking-widest uppercase">
-                <span>{item.category}</span>
-                <Eye size={12} className="opacity-0 group-hover:opacity-100 group-hover:text-accent-orange transition-all duration-300" />
-              </div>
-
-              {/* Central Symbol */}
-              <div
-                className="w-24 h-24 rounded-full border border-white/5 flex items-center justify-center text-4xl self-center bg-white/2 shadow-[0_0_20px_rgba(255,255,255,0.02)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
-                style={{
-                  boxShadow: `0 0 30px ${item.color}10`,
-                  borderColor: `${item.color}20`
-                }}
+          {GALLERY_ITEMS.map((item) => {
+            const isActive = activeBgId === item.id;
+            return (
+              <motion.div
+                key={item.id}
+                whileHover={{ y: -6 }}
+                onClick={() => setSelectedItem(item)}
+                className={`glass-panel rounded-2xl overflow-hidden h-80 relative cursor-pointer group border flex flex-col justify-between p-8 transition-colors ${
+                  isActive ? "border-accent-orange" : "border-white/5"
+                }`}
               >
-                {item.symbol}
-              </div>
+                {/* Blur color circle behind */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle at center, ${item.color}30 0%, transparent 70%)`,
+                  }}
+                />
 
-              {/* Title Block */}
-              <div className="border-t border-white/5 pt-4">
-                <h3 className="font-cinzel text-lg font-bold text-white tracking-wider group-hover:text-accent-orange transition-colors">
-                  {item.title}
-                </h3>
-                <span className="text-[10px] font-poppins text-white/30 tracking-wider uppercase block mt-1">
-                  CLASSIFIED FILES ➔
-                </span>
-              </div>
-            </motion.div>
-          ))}
+                {/* Category */}
+                <div className="flex justify-between items-center text-[10px] font-cinzel text-white/40 tracking-widest uppercase">
+                  <span>{item.category}</span>
+                  <div className="flex items-center gap-1.5">
+                    {isActive && (
+                      <span className="text-accent-orange text-[9px] tracking-wider uppercase font-semibold flex items-center gap-1">
+                        <ShieldAlert size={10} /> ACTIVE BG
+                      </span>
+                    )}
+                    <Eye size={12} className="opacity-0 group-hover:opacity-100 group-hover:text-accent-orange transition-all duration-300" />
+                  </div>
+                </div>
+
+                {/* Central Symbol */}
+                <div
+                  className="w-24 h-24 rounded-full border border-white/5 flex items-center justify-center text-4xl self-center bg-white/2 shadow-[0_0_20px_rgba(255,255,255,0.02)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                  style={{
+                    boxShadow: `0 0 30px ${item.color}10`,
+                    borderColor: `${item.color}20`
+                  }}
+                >
+                  {item.symbol}
+                </div>
+
+                {/* Title Block */}
+                <div className="border-t border-white/5 pt-4">
+                  <h3 className="font-cinzel text-lg font-bold text-white tracking-wider group-hover:text-accent-orange transition-colors">
+                    {item.title}
+                  </h3>
+                  <span className="text-[10px] font-poppins text-white/30 tracking-wider uppercase block mt-1">
+                    CLASSIFIED FILES ➔
+                  </span>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
@@ -173,6 +195,21 @@ export default function Gallery() {
                 <p className="text-sm text-white/70 font-poppins leading-relaxed mb-6">
                   {selectedItem.description}
                 </p>
+
+                {/* Set Background Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleSetBackground(selectedItem)}
+                  className="px-6 py-2.5 rounded-full border text-xs font-cinzel tracking-widest uppercase font-bold cursor-pointer transition-colors shadow-lg mt-2 mb-6"
+                  style={{
+                    borderColor: selectedItem.color,
+                    backgroundColor: `${selectedItem.color}15`,
+                    color: "#ffffff"
+                  }}
+                >
+                  Set as Home Background
+                </motion.button>
 
                 <div className="w-16 h-[1px]" style={{ backgroundColor: selectedItem.color }} />
               </div>
