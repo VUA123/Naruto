@@ -9,6 +9,10 @@ import Villages from "./sections/Villages";
 import BijuuCodex from "./sections/BijuuCodex";
 import Gallery from "./sections/Gallery";
 import type { GalleryItem } from "./sections/Gallery";
+import Mechanics from "./sections/Mechanics";
+import Timeline from "./sections/Timeline";
+import Glossary from "./components/Glossary";
+import AudioPlayer from "./components/AudioPlayer";
 import Footer from "./components/Footer";
 import Cursor from "./components/Cursor";
 import Loader from "./components/Loader";
@@ -83,6 +87,8 @@ export default function App() {
           <Route path="/clans" element={<Clans />} />
           <Route path="/villages" element={<Villages />} />
           <Route path="/bijuu" element={<BijuuCodex />} />
+          <Route path="/mechanics" element={<Mechanics />} />
+          <Route path="/timeline" element={<Timeline />} />
           <Route 
             path="/gallery" 
             element={
@@ -94,6 +100,12 @@ export default function App() {
           />
         </Routes>
       </main>
+
+      {/* Persistent global Glossary dictionary helper */}
+      <Glossary />
+
+      {/* Persistent global Audio Ambiance synthesizer */}
+      <AudioPlayer />
 
       {/* Luxury Cinematic Footer */}
       <Footer />

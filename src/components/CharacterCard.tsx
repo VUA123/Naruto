@@ -12,6 +12,7 @@ export default function CharacterCard({ shinobi }: CharacterCardProps) {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
@@ -66,27 +67,38 @@ export default function CharacterCard({ shinobi }: CharacterCardProps) {
           </div>
         </div>
 
-        {/* Placeholder Avatar - Cinematic abstract graphics */}
+        {/* Avatar - Cinematic abstract graphics or character image */}
         <div
           className="w-full h-44 rounded-xl flex items-center justify-center relative overflow-hidden my-4 border border-white/5 bg-white/2"
           style={{ transform: "translateZ(10px)" }}
         >
-          {/* Swirling energy circles to act as placeholder art */}
-          <div
-            className="absolute w-24 h-24 rounded-full border border-dashed opacity-20 animate-[spin_12s_linear_infinite]"
-            style={{ borderColor: shinobi.color }}
-          />
-          <div
-            className="absolute w-16 h-16 rounded-full border border-dashed opacity-30 animate-[spin_8s_linear_infinite_reverse]"
-            style={{ borderColor: shinobi.color }}
-          />
-          <div
-            className="absolute w-10 h-10 rounded-full flex items-center justify-center text-2xl font-cinzel text-white/80 select-none shadow-[0_0_20px_rgba(255,255,255,0.05)] font-black"
-            style={{ textShadow: `0 0 10px ${shinobi.color}` }}
-          >
-            {shinobi.name.split(" ")[0][0]}
-            {shinobi.name.split(" ")[1]?.[0] || ""}
-          </div>
+          {!imgError ? (
+            <img
+              src={`/Images/${shinobi.id}.jpg`}
+              alt={shinobi.name}
+              onError={() => setImgError(true)}
+              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
+            />
+          ) : (
+            <>
+              {/* Swirling energy circles to act as placeholder art */}
+              <div
+                className="absolute w-24 h-24 rounded-full border border-dashed opacity-20 animate-[spin_12s_linear_infinite]"
+                style={{ borderColor: shinobi.color }}
+              />
+              <div
+                className="absolute w-16 h-16 rounded-full border border-dashed opacity-30 animate-[spin_8s_linear_infinite_reverse]"
+                style={{ borderColor: shinobi.color }}
+              />
+              <div
+                className="absolute w-10 h-10 rounded-full flex items-center justify-center text-2xl font-cinzel text-white/80 select-none shadow-[0_0_20px_rgba(255,255,255,0.05)] font-black"
+                style={{ textShadow: `0 0 10px ${shinobi.color}` }}
+              >
+                {shinobi.name.split(" ")[0][0]}
+                {shinobi.name.split(" ")[1]?.[0] || ""}
+              </div>
+            </>
+          )}
         </div>
 
         {/* Info Area */}
@@ -135,20 +147,31 @@ export default function CharacterCard({ shinobi }: CharacterCardProps) {
               <div className="p-8 md:p-10">
                 {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                  <div>
-                    <span
-                      className="text-xs font-cinzel tracking-widest uppercase px-2 py-1 rounded border border-white/5 inline-block mb-2"
-                      style={{
-                        backgroundColor: `${shinobi.color}10`,
-                        borderColor: `${shinobi.color}30`,
-                        color: shinobi.color,
-                      }}
-                    >
-                      {shinobi.rank}
-                    </span>
-                    <h2 className="text-3xl font-bold font-cinzel tracking-wider text-white">
-                      {shinobi.name}
-                    </h2>
+                  <div className="flex items-center gap-4">
+                    {!imgError && (
+                      <div className="w-16 h-16 rounded-full border border-white/10 overflow-hidden bg-white/5 flex-shrink-0">
+                        <img
+                          src={`/Images/${shinobi.id}.jpg`}
+                          alt={shinobi.name}
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <span
+                        className="text-xs font-cinzel tracking-widest uppercase px-2 py-1 rounded border border-white/5 inline-block mb-2"
+                        style={{
+                          backgroundColor: `${shinobi.color}10`,
+                          borderColor: `${shinobi.color}30`,
+                          color: shinobi.color,
+                        }}
+                      >
+                        {shinobi.rank}
+                      </span>
+                      <h2 className="text-3xl font-bold font-cinzel tracking-wider text-white">
+                        {shinobi.name}
+                      </h2>
+                    </div>
                   </div>
                   <div className="flex flex-col gap-1 text-xs text-white/50 font-poppins">
                     <span className="flex items-center gap-1.5">

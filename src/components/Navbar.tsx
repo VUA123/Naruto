@@ -9,6 +9,8 @@ const NAV_ITEMS = [
   { id: "/clans", label: "Clans" },
   { id: "/villages", label: "Villages" },
   { id: "/bijuu", label: "Bijuu Codex" },
+  { id: "/mechanics", label: "Chakra & Jutsu" },
+  { id: "/timeline", label: "History" },
   { id: "/gallery", label: "Gallery" }
 ];
 

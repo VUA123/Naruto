@@ -4,10 +4,48 @@ import { SHINOBI_ROSTER } from "../data/shinobi";
 import CharacterCard from "../components/CharacterCard";
 import { Search, SlidersHorizontal, ChevronDown } from "lucide-react";
 
+const TEAM_MAPPING: Record<string, string> = {
+  naruto: "Team 7",
+  sasuke: "Team 7",
+  sakura: "Team 7",
+  kakashi: "Team 7",
+  jiraiya: "Legendary Sannin",
+  tsunade: "Legendary Sannin",
+  orochimaru: "Legendary Sannin",
+  itachi: "Akatsuki",
+  kisame: "Akatsuki",
+  deidara: "Akatsuki",
+  sasori: "Akatsuki",
+  hidan: "Akatsuki",
+  kakuzu: "Akatsuki",
+  konan: "Akatsuki",
+  zetsu: "Akatsuki",
+  pain: "Akatsuki",
+  obito: "Akatsuki",
+  hashirama: "Hokage Founders",
+  tobirama: "Hokage Founders",
+  minato: "Team Minato",
+  guy: "Team Guy",
+  lee: "Team Guy",
+  neji: "Team Guy",
+  tenten: "Team Guy",
+  shikamaru: "Team 10 (Ino-Shika-Cho)",
+  choji: "Team 10 (Ino-Shika-Cho)",
+  ino: "Team 10 (Ino-Shika-Cho)",
+  hinata: "Team 8",
+  kiba: "Team 8",
+  shino: "Team 8",
+  kurenai: "Team 8",
+  gaara: "Sand Siblings",
+  kankuro: "Sand Siblings",
+  temari: "Sand Siblings"
+};
+
 export default function ShinobiDirectory() {
   const [search, setSearch] = useState("");
   const [villageFilter, setVillageFilter] = useState("All Villages");
   const [rankFilter, setRankFilter] = useState("All Ranks");
+  const [teamFilter, setTeamFilter] = useState("All Squads");
 
   const filteredRoster = useMemo(() => {
     return SHINOBI_ROSTER.filter((shinobi) => {
@@ -48,9 +86,15 @@ export default function ShinobiDirectory() {
         }
       }
 
+      // 4. Team matching
+      if (teamFilter !== "All Squads") {
+        const charTeam = TEAM_MAPPING[shinobi.id] || "Other";
+        if (charTeam !== teamFilter) return false;
+      }
+
       return true;
     });
-  }, [search, villageFilter, rankFilter]);
+  }, [search, villageFilter, rankFilter, teamFilter]);
 
   return (
     <section id="shinobi" className="py-24 px-6 md:px-12 bg-[#070707] border-t border-white/5 relative">
@@ -118,6 +162,29 @@ export default function ShinobiDirectory() {
                 <option value="Missing-Nin">Missing-Nin</option>
                 <option value="Akatsuki">Akatsuki</option>
                 <option value="Genin">Genin</option>
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" size={16} />
+            </div>
+
+            {/* Squad/Affiliation Dropdown */}
+            <div className="relative w-full sm:w-48">
+              <select
+                value={teamFilter}
+                onChange={(e) => setTeamFilter(e.target.value)}
+                className="w-full bg-[#111111] border border-white/10 rounded-xl py-3 pl-4 pr-10 text-sm font-poppins text-white focus:outline-none focus:border-accent-orange/50 transition-colors appearance-none cursor-pointer"
+                style={{
+                  borderColor: teamFilter !== "All Squads" ? "#ff7a18" : ""
+                }}
+              >
+                <option value="All Squads">All Squads</option>
+                <option value="Team 7">Team 7</option>
+                <option value="Legendary Sannin">Legendary Sannin</option>
+                <option value="Akatsuki">Akatsuki</option>
+                <option value="Team Guy">Team Guy</option>
+                <option value="Team 10 (Ino-Shika-Cho)">Team 10 (Ino-Shika-Cho)</option>
+                <option value="Team 8">Team 8</option>
+                <option value="Sand Siblings">Sand Siblings</option>
+                <option value="Hokage Founders">Hokage Founders</option>
               </select>
               <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" size={16} />
             </div>
