@@ -11,6 +11,8 @@ import Gallery from "./sections/Gallery";
 import type { GalleryItem } from "./sections/Gallery";
 import Mechanics from "./sections/Mechanics";
 import Timeline from "./sections/Timeline";
+import Dojutsu from "./sections/Dojutsu";
+import JutsuLibrary from "./sections/JutsuLibrary";
 import Glossary from "./components/Glossary";
 import AudioPlayer from "./components/AudioPlayer";
 import Footer from "./components/Footer";
@@ -89,6 +91,8 @@ export default function App() {
           <Route path="/bijuu" element={<BijuuCodex />} />
           <Route path="/mechanics" element={<Mechanics />} />
           <Route path="/timeline" element={<Timeline />} />
+          <Route path="/dojutsu" element={<Dojutsu />} />
+          <Route path="/jutsu" element={<JutsuLibrary />} />
           <Route 
             path="/gallery" 
             element={
