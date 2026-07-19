@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Clock, ShieldAlert, Flag, Zap, Award, Users } from "lucide-react";
+import { Clock, ShieldAlert, Flag, Zap, Award, Users, Swords, Flame, Skull, Eye } from "lucide-react";
 
 interface TimelineNode {
   era: string;
@@ -45,26 +45,80 @@ const TIMELINE_DATA: TimelineNode[] = [
     date: "The Night of Sealing",
     description: "A mysterious masked rogue ninja (Obito Uchiha acting under the name Tobi) bypassed Konoha's security and unleashed the Nine-Tails Tailed Beast (Kurama) upon the village. The Fourth Hokage, Minato Namikaze, and his wife Kushina sacrificed their lives to stop the beast, sealing it within their newborn son, Naruto.",
     keyDetails: ["Naruto Uzumaki became the Nine-Tails Jinchuriki", "Konoha was heavily damaged, breeding deep suspicion of the Uchiha clan", "Minato sealed his and Kushina's chakra inside Naruto to help him later"],
-    icon: ShieldAlert,
+    icon: Flame,
     color: "#a78bfa"
   },
   {
     era: "Era 5",
-    title: "The Birth of Team 7",
-    date: "The Start of the Chronicles",
-    description: "Twelve years after the tragedy, Naruto Uzumaki graduates the academy and is assigned to Team 7 under the tutelage of Kakashi Hatake, alongside his rival Sasuke Uchiha and Sakura Haruno. This begins their shared path of growth, rivalry, and eventually, diverging fates.",
-    keyDetails: ["Team 7 completed their first major mission in the Land of Waves", "Sasuke Uchiha defected to Orochimaru in search of power to avenge his clan", "Naruto set out to train with Jiraiya to bring Sasuke back"],
+    title: "Team 7 & The Chūnin Exams",
+    date: "Part I: The Beginning",
+    description: "Twelve years after the tragedy, Naruto Uzumaki graduates the academy and forms Team 7 with Sasuke Uchiha and Sakura Haruno under Kakashi Hatake. They soon enter the perilous Chūnin Exams, drawing ninja from all over the globe into a high-stakes survival test.",
+    keyDetails: ["Team 7 bonded during their first A-rank mission in the Land of Waves against Zabuza", "The Chūnin Exams tested the world's most promising young genin", "Orochimaru infiltrated the exams and placed a Curse Mark on Sasuke"],
     icon: Users,
     color: "#3b82f6"
   },
   {
     era: "Era 6",
+    title: "The Konoha Crush",
+    date: "Part I: The Fall of the Third",
+    description: "During the final rounds of the Chūnin Exams, the Hidden Sand and Hidden Sound villages launched a surprise invasion on the Leaf Village. The Third Hokage, Hiruzen Sarutobi, sacrificed his life to seal away Orochimaru's arms, stopping the invasion but leaving the village leaderless.",
+    keyDetails: ["Naruto defeated the One-Tail Jinchuriki, Gaara, changing his heart forever", "Hiruzen used the Reaper Death Seal against Orochimaru and the reanimated previous Hokages", "Tsunade was eventually recruited to become the Fifth Hokage"],
+    icon: Skull,
+    color: "#ff3e3e"
+  },
+  {
+    era: "Era 7",
+    title: "The Sasuke Retrieval Mission",
+    date: "Part I: The Valley of the End",
+    description: "Desperate for the power to defeat his brother Itachi, Sasuke Uchiha abandons the Leaf Village to seek out Orochimaru. A team of young genin, led by Shikamaru Nara, embarks on a desperate pursuit, culminating in a legendary and tragic clash between Naruto and Sasuke at the Valley of the End.",
+    keyDetails: ["The Sound Four were defeated by the Leaf Genin with help from the Sand Siblings", "Sasuke unlocked the final stage of his Curse Mark and fully matured Sharingan", "Naruto failed to bring Sasuke back, vowing to train under Jiraiya for three years"],
+    icon: Swords,
+    color: "#6d28d9"
+  },
+  {
+    era: "Era 8",
+    title: "The Akatsuki Suppression",
+    date: "Shippuden: The Return",
+    description: "Two and a half years later, an older, stronger Naruto returns to the village. The Akatsuki, a rogue organization of S-class criminals, begins actively hunting Jinchūriki to extract their Tailed Beasts. The Leaf Village wages a shadow war to suppress the Akatsuki members.",
+    keyDetails: ["Gaara is captured, but rescued by Naruto and Lady Chiyo", "Asuma Sarutobi is killed by Hidan, leading Shikamaru to enact brilliant revenge", "Sasuke seemingly kills Orochimaru and forms his own team (Taka) to hunt Itachi"],
+    icon: Eye,
+    color: "#ff7a18"
+  },
+  {
+    era: "Era 9",
+    title: "The Tale of Jiraiya & Pain's Assault",
+    date: "Shippuden: Destruction of Konoha",
+    description: "Jiraiya infiltrates the Hidden Rain to uncover the Akatsuki's leader, Pain, but is killed in combat. Pain then launches a devastating assault on Konoha, flattening the entire village to dust. Naruto returns, having mastered Sage Mode, to face Pain in an epic confrontation of ideals.",
+    keyDetails: ["Jiraiya sacrifices himself to send vital intelligence back to the Leaf", "Pain uses Almighty Push to utterly destroy Konohagakure", "Naruto defeats Pain (Nagato) and convinces him to resurrect the fallen villagers"],
+    icon: ShieldAlert,
+    color: "#a78bfa"
+  },
+  {
+    era: "Era 10",
+    title: "The Five Kage Summit",
+    date: "Shippuden: Gathering Storm",
+    description: "In response to the Akatsuki's escalating threat, the leaders of the Five Great Nations convene a rare summit in the Land of Iron. Sasuke infiltrates the summit seeking revenge on the Leaf elders, while Tobi declares the start of the Fourth Great Ninja War.",
+    keyDetails: ["Sasuke discovers the tragic truth of Itachi's sacrifice and vows to destroy Konoha", "Danzo Shimura briefly takes power before being killed by Sasuke", "The Five Nations agree to form the first-ever Allied Shinobi Forces"],
+    icon: Flag,
+    color: "#eab308"
+  },
+  {
+    era: "Era 11",
     title: "The Fourth Great Shinobi War",
-    date: "The Ultimate Alliance",
-    description: "Under the Akatsuki's manipulation, the world is plunged into the Fourth Great Shinobi War. For the first time in history, all Five Great Nations put aside their hatred to form the Allied Shinobi Forces, uniting to stop Madara Uchiha, Obito, and eventually the primordial progenitor of chakra, Kaguya Ōtsutsuki.",
-    keyDetails: ["The war united 80,000 ninja under a single banner", "Naruto and Sasuke gained god-like powers from the Sage of Six Paths", "The cycle of hatred was finally broken in a final, historic duel between Naruto and Sasuke"],
+    date: "Shippuden: The Ultimate Alliance",
+    description: "The Allied Shinobi Forces, 80,000 strong, clash against an army of White Zetsu and legendary reanimated ninja controlled by Kabuto. The conflict escalates into a battle against the true masterminds: Obito Uchiha, the resurrected Madara Uchiha, and ultimately, the alien progenitor Kaguya Ōtsutsuki.",
+    keyDetails: ["Naruto befriends Kurama, unlocking Nine-Tails Chakra Mode", "Madara unleashes the Ten-Tails and casts the Infinite Tsukuyomi over the world", "Team 7 unites one last time to seal away Kaguya and save humanity"],
     icon: Award,
     color: "#4ade80"
+  },
+  {
+    era: "Era 12",
+    title: "The Final Valley",
+    date: "Shippuden: The Cycle Broken",
+    description: "With the world saved, Sasuke declares his intention to execute the Kage and forcefully govern the world from the shadows to ensure permanent peace. Naruto refuses to let his friend walk a path of loneliness, leading to their final, cataclysmic duel at the Valley of the End.",
+    keyDetails: ["The battle destroys the statues of Hashirama and Madara, symbolizing the end of the feud", "Both Naruto and Sasuke lose an arm in the final clash", "Sasuke finally concedes to Naruto's vision of cooperation, ending the cycle of hatred forever"],
+    icon: Clock,
+    color: "#3b82f6"
   }
 ];
 
