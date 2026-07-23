@@ -29,10 +29,10 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
       color: string;
     }> = [];
 
-    // Use selected gallery item colors or fallback to default orange palette
+    // Use selected gallery item colors or fallback to default Valley of the End palette
     const colors = customBg 
       ? [customBg.color, "#ffb347", "#ffffff"]
-      : ["#ff7a18", "#ffb347", "#d62828", "#6d28d9"];
+      : ["#d62828", "#ffb347", "#ffffff"];
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -112,11 +112,11 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
       <div 
         className="absolute text-[15rem] md:text-[25rem] select-none pointer-events-none opacity-5 font-bold transition-all duration-1000 z-0 animate-[pulse_6s_infinite]"
         style={{
-          color: customBg ? customBg.color : "#ff7a18",
+          color: customBg ? customBg.color : "#d62828",
           textShadow: customBg ? `0 0 100px ${customBg.color}` : "none"
         }}
       >
-        {customBg ? customBg.symbol : "🌀"}
+        {customBg ? customBg.symbol : "⚔️"}
       </div>
 
       {/* Cinematic Vignette Overlay */}
@@ -170,8 +170,8 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
           <h2 
             className="font-cinzel text-xl md:text-3xl font-bold tracking-[0.4em] uppercase mb-8 transition-colors duration-1000"
             style={{
-              color: customBg ? customBg.color : "#ff7a18",
-              textShadow: customBg ? `0 0 15px ${customBg.color}50` : `0 0 10px rgba(255,122,24,0.3)`
+              color: customBg ? customBg.color : "#d62828",
+              textShadow: customBg ? `0 0 15px ${customBg.color}50` : `0 0 10px rgba(214,40,40,0.3)`
             }}
           >
             {customBg ? customBg.title : "NINJA CHRONICLES"}
@@ -200,8 +200,8 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
           whileTap={{ scale: 0.98 }}
           className="glass-panel text-white font-cinzel text-sm tracking-widest px-8 py-4 rounded-full font-bold relative group overflow-hidden cursor-pointer"
           style={{
-            borderColor: customBg ? `${customBg.color}50` : "rgba(255, 122, 24, 0.3)",
-            boxShadow: customBg ? `0 0 20px ${customBg.color}15` : "0 0 15px rgba(255, 122, 24, 0.1)"
+            borderColor: customBg ? `${customBg.color}50` : "rgba(214, 40, 40, 0.3)",
+            boxShadow: customBg ? `0 0 20px ${customBg.color}15` : "0 0 15px rgba(214, 40, 40, 0.1)"
           }}
         >
           <div 
@@ -209,7 +209,7 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
             style={{
               backgroundImage: customBg 
                 ? `linear-gradient(to right, ${customBg.color}, #ffb347)`
-                : "linear-gradient(to right, #ff7a18, #ffb347)"
+                : "linear-gradient(to right, #d62828, #ffb347)"
             }}
           />
           ENTER THE ROSTER ➔

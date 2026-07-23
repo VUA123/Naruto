@@ -2,9 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, X, Search, Sparkles } from "lucide-react";
 import { GLOSSARY_DATA } from "../data/glossary";
+import type { GlossaryTerm } from "../data/glossary";
 
 export default function Glossary() {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedTerm, setSelectedTerm] = useState<GlossaryTerm | null>(null);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
@@ -56,6 +58,7 @@ export default function Glossary() {
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[#070707]/95 border-l border-white/5 z-50 flex flex-col h-full shadow-2xl p-6 md:p-8"
+              data-lenis-prevent
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-4">
@@ -117,7 +120,8 @@ export default function Glossary() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: Math.min(index * 0.04, 0.4) }}
-                    className="bg-white/2 rounded-xl p-4 border border-white/5 relative group hover:border-white/10 transition-colors"
+                    onClick={() => setSelectedTerm(item)}
+                    className="bg-white/2 rounded-xl p-4 border border-white/5 relative group hover:border-white/10 transition-colors cursor-pointer hover:bg-white/4"
                   >
                     {/* Tiny category pill */}
                     <span className="absolute top-4 right-4 text-[8px] font-cinzel tracking-widest text-accent-gold/60 uppercase bg-white/2 px-1.5 py-0.5 rounded border border-white/5">
@@ -150,6 +154,75 @@ export default function Glossary() {
               </div>
             </motion.div>
           </>
+        )}
+      </AnimatePresence>
+
+      {/* Detailed Term Modal Popup */}
+      <AnimatePresence>
+        {selectedTerm && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-1 sm:p-2 bg-[#000000]/85 backdrop-blur-md">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedTerm(null)}
+              className="absolute inset-0 cursor-pointer"
+            />
+
+            {/* Modal Body */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 220 }}
+              className="glass-panel-glow w-full h-full max-w-full max-h-full rounded-xl overflow-hidden relative p-6 md:p-10 bg-[#0c0c0c]/95 border border-white/10 shadow-2xl z-10 flex flex-col"
+              data-lenis-prevent
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedTerm(null)}
+                className="absolute top-4 right-4 w-10 h-10 rounded-full border border-white/5 hover:bg-white/5 transition-colors flex items-center justify-center text-white/60 hover:text-white cursor-pointer z-20"
+              >
+                ✕
+              </button>
+
+              {/* Icon / Design Accent */}
+              <div className="flex flex-col items-center text-center mb-6">
+                <div className="w-16 h-16 rounded-full border border-accent-orange/20 bg-accent-orange/5 flex items-center justify-center text-accent-orange mb-4 shadow-[0_0_30px_rgba(214,40,40,0.1)]">
+                  <Sparkles size={24} />
+                </div>
+                <span className="text-[10px] font-cinzel text-accent-gold tracking-[0.3em] uppercase block mb-1">
+                  {selectedTerm.category}
+                </span>
+                <h3 className="text-2xl md:text-3xl font-bold font-cinzel text-white tracking-widest uppercase">
+                  {selectedTerm.term}
+                </h3>
+                <div className="w-16 h-[1px] bg-gradient-to-r from-transparent via-accent-orange to-transparent mt-3" />
+              </div>
+
+              {/* Scrollable Lore Content */}
+              <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                <p className="text-xs text-white/50 font-poppins italic border-l-2 border-accent-orange/40 pl-3 py-1.5 mb-6 leading-relaxed bg-white/2 rounded-r-md">
+                  {selectedTerm.definition}
+                </p>
+                
+                {/* Long description split by double newlines into paragraphs */}
+                <div className="space-y-4 text-sm text-white/80 font-poppins leading-relaxed">
+                  {selectedTerm.detailedDescription.split("\n\n").map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer decorative line */}
+              <div className="border-t border-white/5 pt-4 mt-6 text-center">
+                <span className="text-[9px] font-cinzel text-white/30 tracking-[0.25em] uppercase">
+                  CLASSIFIED LEAF CODENAME // SECURE DATA
+                </span>
+              </div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>
