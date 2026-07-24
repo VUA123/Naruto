@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, ShieldAlert, Image as ImageIcon } from "lucide-react";
+import { ChevronDown, Image as ImageIcon } from "lucide-react";
 import type { GalleryItem } from "./Gallery";
 
 interface HeroProps {
@@ -105,6 +105,16 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
           : "none"
       }}
     >
+      {/* Cinematic Full-screen Background Image with transition */}
+      {customBg?.image && (
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-1000 pointer-events-none z-0"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, rgba(7,7,7,0.35), rgba(7,7,7,0.85)), url(${encodeURI(customBg.image)})`,
+          }}
+        />
+      )}
+
       {/* HTML5 Dynamic Chakra Particles Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
 
@@ -113,7 +123,8 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
         className="absolute text-[15rem] md:text-[25rem] select-none pointer-events-none opacity-5 font-bold transition-all duration-1000 z-0 animate-[pulse_6s_infinite]"
         style={{
           color: customBg ? customBg.color : "#d62828",
-          textShadow: customBg ? `0 0 100px ${customBg.color}` : "none"
+          textShadow: customBg ? `0 0 100px ${customBg.color}` : "none",
+          display: customBg?.image ? "none" : "block"
         }}
       >
         {customBg ? customBg.symbol : "⚔️"}
@@ -126,7 +137,7 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
       <div className="relative z-20 text-center px-6 max-w-5xl flex flex-col items-center">
         
         {/* State Badge: Will of fire or active custom background lore */}
-        {customBg ? (
+        {customBg && customBg.id !== "valley" ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -147,15 +158,7 @@ export default function Hero({ onExploreClick, customBg, onResetBg }: HeroProps)
               RESET ✕
             </button>
           </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 0.6, y: 0 }}
-            className="flex items-center gap-2 mb-6 border border-white/10 px-4 py-1.5 rounded-full bg-white/2 backdrop-blur-md text-[10px] tracking-[0.25em] uppercase text-accent-gold"
-          >
-            <ShieldAlert size={12} className="text-accent-orange" /> WILL OF FIRE ENDURES
-          </motion.div>
-        )}
+        ) : null}
 
         {/* Title */}
         <motion.div

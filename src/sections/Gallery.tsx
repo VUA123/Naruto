@@ -9,16 +9,18 @@ export interface GalleryItem {
   description: string;
   symbol: string;
   color: string;
+  image?: string;
 }
 
-const GALLERY_ITEMS: GalleryItem[] = [
+export const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: "valley",
     title: "Valley of the End",
     category: "Environments",
     description: "The legendary gorge where Hashirama Senju and Madara Uchiha engaged in their epoch-ending duel, co-founding the cycle of fate which Sasuke and Naruto would eventually break.",
     symbol: "⚔️",
-    color: "#d62828"
+    color: "#d62828",
+    image: "/Gallery/The Valley of the end.jpg"
   },
   {
     id: "monument",
@@ -26,7 +28,8 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "Structures",
     description: "The massive cliffside overlooking Konohagakure, carved with the faces of all who have served as Hokage. A symbol of leadership and protection.",
     symbol: "🪨",
-    color: "#ffb347"
+    color: "#ffb347",
+    image: "/Gallery/Hokage Rock Monument.jpg"
   },
   {
     id: "rasengan",
@@ -34,7 +37,8 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "Techniques",
     description: "The ultimate clash of ideals: Naruto's spiraling wind sphere of cooperation versus Sasuke's piercing lightning blade of isolated vengeance.",
     symbol: "🌀",
-    color: "#ff7a18"
+    color: "#ff7a18",
+    image: "/Gallery/Rasengan vs Chidori.jpg"
   },
   {
     id: "sharingan",
@@ -50,7 +54,8 @@ const GALLERY_ITEMS: GalleryItem[] = [
     category: "Ideology",
     description: "The spiritual belief that the entire village is like a large family unit, and every Leaf shinobi must love, trust, and protect the next generation.",
     symbol: "🔥",
-    color: "#ff7a18"
+    color: "#ff7a18",
+    image: "/Gallery/The will of fire.jpg"
   },
   {
     id: "akatsuki",
@@ -116,8 +121,18 @@ export default function Gallery({ onSelectBackground, activeBgId }: GalleryProps
                   }}
                 />
 
+                {/* Real Image background on hover */}
+                {item.image && (
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none bg-cover bg-center z-0 scale-105 group-hover:scale-100 transition-transform duration-700"
+                    style={{
+                      backgroundImage: `url(${item.image})`,
+                    }}
+                  />
+                )}
+
                 {/* Category */}
-                <div className="flex justify-between items-center text-[10px] font-cinzel text-white/40 tracking-widest uppercase">
+                <div className="flex justify-between items-center text-[10px] font-cinzel text-white/40 tracking-widest uppercase relative z-10">
                   <span>{item.category}</span>
                   <div className="flex items-center gap-1.5">
                     {isActive && (
@@ -131,7 +146,7 @@ export default function Gallery({ onSelectBackground, activeBgId }: GalleryProps
 
                 {/* Central Symbol */}
                 <div
-                  className="w-24 h-24 rounded-full border border-white/5 flex items-center justify-center text-4xl self-center bg-white/2 shadow-[0_0_20px_rgba(255,255,255,0.02)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
+                  className="w-24 h-24 rounded-full border border-white/5 flex items-center justify-center text-4xl self-center bg-white/2 shadow-[0_0_20px_rgba(255,255,255,0.02)] group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 relative z-10"
                   style={{
                     boxShadow: `0 0 30px ${item.color}10`,
                     borderColor: `${item.color}20`
@@ -141,7 +156,7 @@ export default function Gallery({ onSelectBackground, activeBgId }: GalleryProps
                 </div>
 
                 {/* Title Block */}
-                <div className="border-t border-white/5 pt-4">
+                <div className="border-t border-white/5 pt-4 relative z-10">
                   <h3 className="font-cinzel text-lg font-bold text-white tracking-wider group-hover:text-accent-orange transition-colors">
                     {item.title}
                   </h3>
@@ -164,6 +179,11 @@ export default function Gallery({ onSelectBackground, activeBgId }: GalleryProps
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               className="glass-panel-glow w-full max-w-lg rounded-2xl overflow-hidden relative p-8 md:p-10"
+              style={{
+                backgroundImage: selectedItem.image ? `linear-gradient(to bottom, rgba(7,7,7,0.85), rgba(7,7,7,0.95)), url(${selectedItem.image})` : "none",
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }}
             >
               {/* Close Button */}
               <button

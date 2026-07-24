@@ -7,7 +7,7 @@ import ShinobiDirectory from "./sections/ShinobiDirectory";
 import Clans from "./sections/Clans";
 import Villages from "./sections/Villages";
 import BijuuCodex from "./sections/BijuuCodex";
-import Gallery from "./sections/Gallery";
+import Gallery, { GALLERY_ITEMS } from "./sections/Gallery";
 import type { GalleryItem } from "./sections/Gallery";
 import Mechanics from "./sections/Mechanics";
 import Timeline from "./sections/Timeline";
@@ -30,7 +30,9 @@ function ScrollToTop() {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [customHeroBg, setCustomHeroBg] = useState<GalleryItem | null>(null);
+  const [customHeroBg, setCustomHeroBg] = useState<GalleryItem | null>(
+    GALLERY_ITEMS.find((item) => item.id === "valley") || null
+  );
   const navigate = useNavigate();
 
   // Initialize Lenis Smooth Scroll
@@ -81,7 +83,7 @@ export default function App() {
               <Hero 
                 onExploreClick={() => navigate("/shinobi")} 
                 customBg={customHeroBg}
-                onResetBg={() => setCustomHeroBg(null)}
+                onResetBg={() => setCustomHeroBg(GALLERY_ITEMS.find((item) => item.id === "valley") || null)}
               />
             } 
           />
