@@ -74,7 +74,7 @@ export default function CharacterCard({ shinobi }: CharacterCardProps) {
         >
           {!imgError ? (
             <img
-              src={`/Images/${shinobi.id}.jpg`}
+              src={`/Shinobi/${shinobi.id}.jpg`}
               alt={shinobi.name}
               onError={() => setImgError(true)}
               className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
@@ -151,7 +151,7 @@ export default function CharacterCard({ shinobi }: CharacterCardProps) {
                     {!imgError && (
                       <div className="w-16 h-16 rounded-full border border-white/10 overflow-hidden bg-white/5 flex-shrink-0">
                         <img
-                          src={`/Images/${shinobi.id}.jpg`}
+                          src={`/Shinobi/${shinobi.id}.jpg`}
                           alt={shinobi.name}
                           className="w-full h-full object-cover object-top"
                         />
