@@ -14,6 +14,7 @@ export interface Shinobi {
     intelligence: number;
     stamina: number;
   };
+  natures?: string[]; // Optional Chakra natures for filtering
 }
 
 export const SHINOBI_ROSTER: Shinobi[] = [
@@ -27,7 +28,8 @@ export const SHINOBI_ROSTER: Shinobi[] = [
     description: "The Nine-Tails Jinchuriki who overcame isolation to become the Leaf Village's hero and eventually the Seventh Hokage.",
     specialty: "Shadow Clone Jutsu, Rasengan, Sage Mode",
     color: "#ff7a18",
-    stats: { ninjutsu: 95, taijutsu: 90, genjutsu: 30, intelligence: 70, stamina: 100 }
+    stats: { ninjutsu: 95, taijutsu: 90, genjutsu: 30, intelligence: 70, stamina: 100 },
+    natures: ["Wind"]
   },
   {
     id: "sasuke",
@@ -38,7 +40,8 @@ export const SHINOBI_ROSTER: Shinobi[] = [
     description: "Last survivor of the Uchiha clan, dedicated to avenging his clan, later protector of the village from the shadows.",
     specialty: "Sharingan, Chidori, Susano'o, Amaterasu",
     color: "#6d28d9",
-    stats: { ninjutsu: 98, taijutsu: 92, genjutsu: 95, intelligence: 95, stamina: 85 }
+    stats: { ninjutsu: 98, taijutsu: 92, genjutsu: 95, intelligence: 95, stamina: 85 },
+    natures: ["Lightning", "Fire"]
   },
   {
     id: "sakura",
@@ -49,7 +52,8 @@ export const SHINOBI_ROSTER: Shinobi[] = [
     description: "One of the world's greatest medical ninjas, possessing monstrous strength and perfect chakra control trained by Tsunade.",
     specialty: "Chakra Enhanced Strength, Medical Ninjutsu, Mitotic Regeneration",
     color: "#ffb347",
-    stats: { ninjutsu: 80, taijutsu: 85, genjutsu: 65, intelligence: 98, stamina: 80 }
+    stats: { ninjutsu: 80, taijutsu: 85, genjutsu: 65, intelligence: 98, stamina: 80 },
+    natures: ["Water", "Earth"]
   },
   {
     id: "kakashi",
@@ -60,7 +64,8 @@ export const SHINOBI_ROSTER: Shinobi[] = [
     description: "Known worldwide as the Copy Ninja Kakashi, leader of Team 7, who copied over a thousand jutsu using his Sharingan.",
     specialty: "Chidori, Kamui, Lightning Blade, Thousand Jutsu Copy",
     color: "#ffb347",
-    stats: { ninjutsu: 90, taijutsu: 88, genjutsu: 85, intelligence: 96, stamina: 75 }
+    stats: { ninjutsu: 90, taijutsu: 88, genjutsu: 85, intelligence: 96, stamina: 75 },
+    natures: ["Lightning", "Earth", "Water", "Fire", "Wind"]
   },
   // Legendary Shinobi
   {

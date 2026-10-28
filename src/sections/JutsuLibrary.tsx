@@ -135,8 +135,13 @@ export default function JutsuLibrary() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                  className="glass-panel rounded-3xl p-6 border border-white/5 relative overflow-hidden group hover:border-white/10 transition-colors flex flex-col justify-between h-[360px]"
+                  whileHover={{ 
+                    y: -8, 
+                    borderColor: `${elemStyles.text}40`,
+                    boxShadow: `0 15px 35px ${elemStyles.text}12`
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="glass-panel rounded-3xl p-6 border border-white/5 relative overflow-hidden group flex flex-col justify-between h-[360px]"
                 >
                   {/* Subtle element background glow */}
                   <div

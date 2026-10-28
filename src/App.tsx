@@ -13,11 +13,25 @@ import Mechanics from "./sections/Mechanics";
 import Timeline from "./sections/Timeline";
 import Dojutsu from "./sections/Dojutsu";
 import JutsuLibrary from "./sections/JutsuLibrary";
+import Battles from "./sections/Battles";
+import Arsenal from "./sections/Arsenal";
+import NotFound from "./sections/NotFound";
 import Glossary from "./components/Glossary";
 import AudioPlayer from "./components/AudioPlayer";
 import Footer from "./components/Footer";
 import Cursor from "./components/Cursor";
 import Loader from "./components/Loader";
+
+const HERO_BG_STORAGE_KEY = "ninja-hero-bg";
+const DEFAULT_HERO_BG_ID = "valley";
+
+function resolveHeroBg(id: string | null): GalleryItem | null {
+  return (
+    GALLERY_ITEMS.find((item) => item.id === id) ??
+    GALLERY_ITEMS.find((item) => item.id === DEFAULT_HERO_BG_ID) ??
+    null
+  );
+}
 
 // Utility component to reset scroll position on route transitions
 function ScrollToTop() {
@@ -30,10 +44,37 @@ function ScrollToTop() {
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [customHeroBg, setCustomHeroBg] = useState<GalleryItem | null>(
-    GALLERY_ITEMS.find((item) => item.id === "valley") || null
-  );
+  const [customHeroBg, setCustomHeroBg] = useState<GalleryItem | null>(() => {
+    try {
+      return resolveHeroBg(localStorage.getItem(HERO_BG_STORAGE_KEY));
+    } catch {
+      return resolveHeroBg(DEFAULT_HERO_BG_ID);
+    }
+  });
   const navigate = useNavigate();
+
+  const handleSelectHeroBg = (item: GalleryItem | null) => {
+    setCustomHeroBg(item);
+    try {
+      if (item) {
+        localStorage.setItem(HERO_BG_STORAGE_KEY, item.id);
+      } else {
+        localStorage.removeItem(HERO_BG_STORAGE_KEY);
+      }
+    } catch {
+      // Storage can be unavailable (private mode / blocked cookies); the
+      // selection still works for the current session.
+    }
+  };
+
+  const handleResetHeroBg = () => {
+    setCustomHeroBg(resolveHeroBg(DEFAULT_HERO_BG_ID));
+    try {
+      localStorage.removeItem(HERO_BG_STORAGE_KEY);
+    } catch {
+      // Ignore storage failures on reset.
+    }
+  };
 
   // Initialize Lenis Smooth Scroll
   useEffect(() => {
@@ -83,7 +124,7 @@ export default function App() {
               <Hero 
                 onExploreClick={() => navigate("/shinobi")} 
                 customBg={customHeroBg}
-                onResetBg={() => setCustomHeroBg(GALLERY_ITEMS.find((item) => item.id === "valley") || null)}
+                onResetBg={handleResetHeroBg}
               />
             } 
           />
@@ -93,17 +134,20 @@ export default function App() {
           <Route path="/bijuu" element={<BijuuCodex />} />
           <Route path="/mechanics" element={<Mechanics />} />
           <Route path="/timeline" element={<Timeline />} />
+          <Route path="/battles" element={<Battles />} />
           <Route path="/dojutsu" element={<Dojutsu />} />
           <Route path="/jutsu" element={<JutsuLibrary />} />
+          <Route path="/arsenal" element={<Arsenal />} />
           <Route 
             path="/gallery" 
             element={
               <Gallery 
-                onSelectBackground={setCustomHeroBg} 
+                onSelectBackground={handleSelectHeroBg} 
                 activeBgId={customHeroBg ? customHeroBg.id : null}
               />
             } 
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 

@@ -46,7 +46,8 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     category: "Dojutsu",
     description: "An advanced form of the Sharingan awakened by experiencing deep loss. Possesses god-like techniques but gradually blinds the user.",
     symbol: "👁️",
-    color: "#6d28d9"
+    color: "#6d28d9",
+    image: "/Gallery/Mangekyō Sharingan.jpg"
   },
   {
     id: "will",

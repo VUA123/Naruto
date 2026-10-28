@@ -6,7 +6,8 @@ import { Link, useLocation } from "react-router-dom";
 const PRIMARY_NAV_ITEMS = [
   { id: "/", label: "Home" },
   { id: "/shinobi", label: "Shinobi" },
-  { id: "/timeline", label: "History" }
+  { id: "/timeline", label: "History" },
+  { id: "/battles", label: "Epic Battles" }
 ];
 
 const COMPENDIUM_NAV_ITEMS = [
@@ -16,7 +17,16 @@ const COMPENDIUM_NAV_ITEMS = [
   { id: "/mechanics", label: "Chakra & Jutsu" },
   { id: "/dojutsu", label: "Eye Techniques" },
   { id: "/jutsu", label: "Jutsu Library" },
+  { id: "/arsenal", label: "Ninja Arsenal" },
   { id: "/gallery", label: "Gallery" }
+];
+
+export const VILLAGE_THEMES = [
+  { name: "Leaf", symbol: "🍃", color: "#ff7a18", secondary: "#ffb347" },
+  { name: "Sand", symbol: "⏳", color: "#d97706", secondary: "#f59e0b" },
+  { name: "Mist", symbol: "🌊", color: "#3b82f6", secondary: "#60a5fa" },
+  { name: "Cloud", symbol: "⚡", color: "#a78bfa", secondary: "#c084fc" },
+  { name: "Stone", symbol: "🪨", color: "#8b5a2b", secondary: "#d6d3d1" }
 ];
 
 export default function Navbar() {
@@ -25,6 +35,22 @@ export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
   const activePath = location.pathname;
+
+  const [activeTheme, setActiveTheme] = useState(() => {
+    return localStorage.getItem("ninja-village-theme") || "Leaf";
+  });
+
+  const applyTheme = (themeName: string) => {
+    const theme = VILLAGE_THEMES.find(t => t.name === themeName) || VILLAGE_THEMES[0];
+    document.documentElement.style.setProperty("--color-accent-orange", theme.color);
+    document.documentElement.style.setProperty("--color-accent-gold", theme.secondary);
+    localStorage.setItem("ninja-village-theme", themeName);
+    setActiveTheme(themeName);
+  };
+
+  useEffect(() => {
+    applyTheme(activeTheme);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -146,6 +172,28 @@ export default function Navbar() {
                 </AnimatePresence>
               </li>
             </ul>
+
+            {/* Village Allegiance Selector */}
+            <div className="h-5 w-[1px] bg-white/10" />
+            <div className="flex items-center gap-1 bg-white/2 border border-white/5 px-1.5 py-1 rounded-full">
+              {VILLAGE_THEMES.map((t) => {
+                const isActive = activeTheme === t.name;
+                return (
+                  <motion.button
+                    key={t.name}
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => applyTheme(t.name)}
+                    title={`Align with Hidden ${t.name}`}
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs cursor-pointer transition-colors ${
+                      isActive ? "bg-white/10 border border-white/20" : "opacity-40 hover:opacity-100"
+                    }`}
+                  >
+                    {t.symbol}
+                  </motion.button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -221,6 +269,32 @@ export default function Navbar() {
                   </Link>
                 </motion.li>
               ))}
+
+              <div className="w-12 h-[1px] bg-white/10 mx-auto my-1" />
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-[10px] font-cinzel text-accent-gold/40 tracking-[0.25em] uppercase">
+                  VILLAGE ALLEGIANCE
+                </span>
+                <div className="flex items-center gap-2 bg-white/2 border border-white/5 px-2 py-1 rounded-full">
+                  {VILLAGE_THEMES.map((t) => {
+                    const isActive = activeTheme === t.name;
+                    return (
+                      <button
+                        key={t.name}
+                        onClick={() => {
+                          applyTheme(t.name);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`w-7 h-7 rounded-full flex items-center justify-center text-sm cursor-pointer transition-colors ${
+                          isActive ? "bg-white/10 border border-white/20" : "opacity-40"
+                        }`}
+                      >
+                        {t.symbol}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </ul>
           </motion.div>
         )}

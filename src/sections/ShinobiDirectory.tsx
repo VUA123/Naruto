@@ -41,11 +41,21 @@ const TEAM_MAPPING: Record<string, string> = {
   temari: "Sand Siblings"
 };
 
+const CHAKRA_NATURES = [
+  { name: "All Natures", symbol: "☯️", color: "#a3a3a3" },
+  { name: "Fire", symbol: "🔥", color: "#ef4444" },
+  { name: "Wind", symbol: "🍃", color: "#22c55e" },
+  { name: "Lightning", symbol: "⚡", color: "#eab308" },
+  { name: "Earth", symbol: "🪨", color: "#a78bfa" },
+  { name: "Water", symbol: "💧", color: "#3b82f6" }
+];
+
 export default function ShinobiDirectory() {
   const [search, setSearch] = useState("");
   const [villageFilter, setVillageFilter] = useState("All Villages");
   const [rankFilter, setRankFilter] = useState("All Ranks");
   const [teamFilter, setTeamFilter] = useState("All Squads");
+  const [natureFilter, setNatureFilter] = useState("All Natures");
 
   const filteredRoster = useMemo(() => {
     return SHINOBI_ROSTER.filter((shinobi) => {
@@ -92,9 +102,16 @@ export default function ShinobiDirectory() {
         if (charTeam !== teamFilter) return false;
       }
 
+      // 5. Chakra Nature matching
+      if (natureFilter !== "All Natures") {
+        if (!shinobi.natures || !shinobi.natures.includes(natureFilter)) {
+          return false;
+        }
+      }
+
       return true;
     });
-  }, [search, villageFilter, rankFilter, teamFilter]);
+  }, [search, villageFilter, rankFilter, teamFilter, natureFilter]);
 
   return (
     <section id="shinobi" className="py-24 px-6 md:px-12 bg-[#070707] border-t border-white/5 relative">
@@ -189,6 +206,31 @@ export default function ShinobiDirectory() {
               <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" size={16} />
             </div>
           </div>
+        </div>
+
+        {/* Chakra Natures Filter Buttons */}
+        <div className="flex flex-wrap gap-3 mb-12 justify-center lg:justify-start">
+          {CHAKRA_NATURES.map((nature) => {
+            const isActive = natureFilter === nature.name;
+            return (
+              <motion.button
+                key={nature.name}
+                whileHover={{ y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setNatureFilter(nature.name)}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-full border text-[10px] font-cinzel font-bold tracking-widest uppercase transition-all duration-300 cursor-pointer"
+                style={{
+                  borderColor: isActive ? nature.color : "rgba(255, 255, 255, 0.05)",
+                  backgroundColor: isActive ? `${nature.color}15` : "rgba(255, 255, 255, 0.02)",
+                  color: isActive ? "#ffffff" : "rgba(255, 255, 255, 0.4)",
+                  boxShadow: isActive ? `0 0 15px ${nature.color}20` : "none"
+                }}
+              >
+                <span>{nature.symbol}</span>
+                <span>{nature.name}</span>
+              </motion.button>
+            );
+          })}
         </div>
 
         {/* Shinobi Grid */}
